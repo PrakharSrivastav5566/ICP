@@ -1,15 +1,22 @@
 class Solution {
 public:
-    int lengthOfLongestSubstring(string s) {
-        int ans=0;
-        string k;
-        for(int i=0;i<s.size();i++) {
-            if(k.find(s[i])!=std::string::npos) {
-                k=k.substr(k.find(s[i])+1);
-            }
-            k=k+s[i];
-            ans=max(ans,static_cast<int>(k.size()));
+    bool checkInclusion(string s1, string s2) {
+        if(s1.size()>s2.size())
+        return false;
+
+        vector<int> count_s1(26, 0), count_window(26, 0);
+        
+        for(char c: s1)
+            count_s1[c-'a']++;
+
+        for(int i=0; i<s2.size(); ++i) {
+            count_window[s2[i]-'a']++;
+            if(i>=s1.size())
+                count_window[s2[i-s1.size()] -'a']--;
+
+            if (count_s1==count_window)
+                return true;
         }
-        return ans;
+        return false;
     }
 };
